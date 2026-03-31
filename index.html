@@ -79,6 +79,56 @@
             white-space: nowrap;
         }
 
+        @media (min-width: 769px) {
+            #liveClock {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 100px;
+            }
+
+            .navbar-custom .container-fluid {
+                display: flex;
+                flex-wrap: wrap;
+                position: relative;
+                padding-top: 10px;
+                padding-bottom: 5px;
+                justify-content: center;
+            }
+
+            #sidebar-toggler {
+                position: absolute;
+                top: 12px;
+                right: 15px;
+                margin: 0 !important;
+            }
+
+            .navbar-custom .navbar-brand {
+                width: 100%;
+                text-align: center;
+                font-size: 20px;
+                padding-left: 40px;
+                padding-right: 40px;
+                white-space: normal;
+                margin: 0;
+            }
+
+            #liveClock {
+                width: 100%;
+                text-align: center;
+                font-size: 14px;
+                margin-top: 5px;
+                margin-bottom: 5px;
+                padding: 0;
+            }
+        }
+
         /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
@@ -282,11 +332,11 @@
                 &#9776;
             </button>
             <a class="navbar-brand text-primary fw-bold" href="#">
-                📘 AI Internship Roadmap
+                📘 AI Roadmap
             </a>
 
             <!-- Centered Live Clock -->
-            <div id="liveClock" class="position-absolute top-50 start-50 translate-middle"></div>
+            <div id="liveClock"></div>
 
             <div class="d-none d-md-flex align-items-center ms-auto">
                 <span class="me-3 fw-semibold text-secondary small" id="progress-text">0% Completed</span>
@@ -331,7 +381,7 @@
         <div class="max-w-custom">
 
             <div class="text-center mb-5 mt-3">
-                <h1 class="fw-bold mb-3">AI Intern Preparation Roadmap</h1>
+                <h1 class="fw-bold mb-3">AI Preparation Roadmap</h1>
                 <p class="text-muted text-center mb-4">A complete, structurally organized study guide for aspiring AI
                     and ML engineering interns.</p>
                 <div class="search-container mx-auto" style="max-width: 600px;">
@@ -856,7 +906,7 @@
         </div>
 
         <footer>
-            AI Intern Preparation Roadmap &mdash; Personal Study Guide
+            AI Preparation Roadmap &mdash; Personal Study Guide
         </footer>
     </div>
 
