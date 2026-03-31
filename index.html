@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Roadmap</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --bg-color: #f8f9fa;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar-custom {
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .08);
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            position: fixed;
+            top: 61px;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px 0;
+            background-color: #ffffff;
+            border-right: 1px solid #dee2e6;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .max-w-custom {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .nav-link {
+            color: #495057;
+            padding: 10px 24px;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link:focus {
+            color: var(--primary-color);
+            background-color: #f1f3f5;
+        }
+
+        /* Sections */
+        .section-card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
+            overflow: hidden;
+            scroll-margin-top: 80px;
+        }
+
+        .section-header {
+            cursor: pointer;
+            padding: 18px 24px;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .section-header:hover {
+            background-color: #f8f9fa;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #212529;
+            font-weight: 600;
+        }
+
+        .chevron-icon {
+            transition: transform 0.3s ease;
+            color: #6c757d;
+        }
+
+        .card-body-custom {
+            padding: 10px 24px 24px 24px;
+            border-top: 1px solid #f1f3f5;
+        }
+
+        .topic-list {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+
+        .topic-item {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px dashed #e9ecef;
+            transition: background-color 0.2s;
+        }
+
+        .topic-item:last-child {
+            border-bottom: none;
+        }
+
+        .topic-item:hover {
+            background-color: #fcfcfc;
+        }
+
+        .form-check-input {
+            margin-top: 0;
+            margin-right: 12px;
+            cursor: pointer;
+            width: 1.2em;
+            height: 1.2em;
+        }
+
+        .topic-item label {
+            cursor: pointer;
+            width: 100%;
+            margin: 0;
+            font-size: 1rem;
+            color: #333;
+            transition: color 0.2s;
+        }
+
+        .completed-text {
+            text-decoration: line-through;
+            color: #adb5bd !important;
+        }
+
+        .sub-category {
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sub-category:first-child {
+            margin-top: 10px;
+        }
+
+        .progress-bar-custom {
+            transition: width 0.4s ease;
+        }
+
+        .search-container {
+            margin-bottom: 40px;
+        }
+
+        footer {
+            background-color: #ffffff;
+            padding: 24px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+            margin-top: 50px;
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid px-4">
+            <button class="btn btn-light d-lg-none me-3 border" id="sidebar-toggler" aria-label="Toggle sidebar">
+                &#9776;
+            </button>
+            <a class="navbar-brand text-primary fw-bold" href="#">
+                📘 AI Internship Roadmap
+            </a>
+            <div class="d-none d-md-flex align-items-center ms-auto">
+                <span class="me-3 fw-semibold text-secondary small" id="progress-text">0% Completed</span>
+                <div class="progress" style="width: 200px; height: 8px;">
+                    <div class="progress-bar progress-bar-custom bg-primary" id="overall-progress" role="progressbar"
+                        style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar shadow-sm" id="sidebar">
+        <div class="px-4 mb-4 d-md-none">
+            <span class="fw-semibold text-secondary small" id="progress-text-mobile">0% Completed</span>
+            <div class="progress mt-2" style="height: 8px;">
+                <div class="progress-bar progress-bar-custom bg-primary" id="overall-progress-mobile" role="progressbar"
+                    style="width: 0%"></div>
+            </div>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" href="#sec-1">1. Python Programming</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-2">2. Machine Learning</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-3">3. Deep Learning</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-4">4. NLP</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-5">5. LLMs</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-6">6. Prompt Engineering</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-7">7. RAG</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-8">8. AI Agents</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-9">9. Fine-Tuning</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-10">10. Backend Development</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-11">11. Deployment</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-12">12. MLOps</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-13">13. System Design</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-14">14. Projects</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sec-15">15. Optional Topics</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="max-w-custom">
+
+            <div class="text-center mb-5 mt-3">
+                <h1 class="fw-bold mb-3">AI Intern Preparation Roadmap</h1>
+                <p class="text-muted text-center mb-4">A complete, structurally organized study guide for aspiring AI
+                    and ML engineering interns.</p>
+                <div class="search-container mx-auto" style="max-width: 600px;">
+                    <input type="text" id="search-input" class="form-control form-control-lg shadow-sm"
+                        placeholder="🔍 Search topics (e.g., Transformers, Pandas...)">
+                </div>
+            </div>
+
+            <div id="roadmap-sections">
+                <!-- Section 1 -->
+                <div class="section-card" id="sec-1">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-1">
+                        <h3>🐍 1. Python Programming</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-1" class="collapse show">
+                        <div class="card-body-custom">
+                            <div class="sub-category">Core Python</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-1"><label for="t1-1">Variables</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-2"><label for="t1-2">Data Types</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-3"><label for="t1-3">Loops</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-4"><label for="t1-4">Functions</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-5"><label for="t1-5">Exception Handling</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-6"><label for="t1-6">File Handling</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-7"><label for="t1-7">Modules</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-8"><label for="t1-8">Virtual Environments</label></li>
+                            </ul>
+                            <div class="sub-category">OOP</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-9"><label for="t1-9">Classes</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-10"><label for="t1-10">Objects</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-11"><label for="t1-11">Inheritance</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-12"><label for="t1-12">Polymorphism</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-13"><label for="t1-13">Encapsulation</label></li>
+                            </ul>
+                            <div class="sub-category">Advanced Python</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-14"><label for="t1-14">List Comprehension</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-15"><label for="t1-15">Generators</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-16"><label for="t1-16">Decorators</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-17"><label for="t1-17">Async Programming</label></li>
+                            </ul>
+                            <div class="sub-category">Libraries</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-18"><label for="t1-18">NumPy</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t1-19"><label for="t1-19">Pandas</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="section-card" id="sec-2">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-2">
+                        <h3>🤖 2. Machine Learning</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-2" class="collapse">
+                        <div class="card-body-custom">
+                            <div class="sub-category">Core Concepts</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-1"><label for="t2-1">Supervised Learning</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-2"><label for="t2-2">Unsupervised Learning</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-3"><label for="t2-3">Overfitting</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-4"><label for="t2-4">Underfitting</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-5"><label for="t2-5">Cross Validation</label></li>
+                            </ul>
+                            <div class="sub-category">Metrics</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-6"><label for="t2-6">Accuracy</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-7"><label for="t2-7">Precision</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-8"><label for="t2-8">Recall</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-9"><label for="t2-9">F1 Score</label></li>
+                            </ul>
+                            <div class="sub-category">Algorithms</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-10"><label for="t2-10">Linear Regression</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-11"><label for="t2-11">Logistic Regression</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-12"><label for="t2-12">Decision Trees</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-13"><label for="t2-13">Random Forest</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-14"><label for="t2-14">K-Means</label></li>
+                            </ul>
+                            <div class="sub-category">Tools</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t2-15"><label for="t2-15">scikit-learn</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="section-card" id="sec-3">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-3">
+                        <h3>🧠 3. Deep Learning</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-3" class="collapse">
+                        <div class="card-body-custom">
+                            <div class="sub-category">Topics</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-1"><label for="t3-1">Neural Networks</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-2"><label for="t3-2">Activation Functions</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-3"><label for="t3-3">Loss Functions</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-4"><label for="t3-4">Backpropagation</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-5"><label for="t3-5">CNN</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-6"><label for="t3-6">RNN</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-7"><label for="t3-7">LSTM</label></li>
+                            </ul>
+                            <div class="sub-category">Transformers</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-8"><label for="t3-8">Encoder</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-9"><label for="t3-9">Decoder</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-10"><label for="t3-10">Self-Attention</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-11"><label for="t3-11">Multi-Head Attention</label></li>
+                            </ul>
+                            <div class="sub-category">Frameworks</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-12"><label for="t3-12">PyTorch</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t3-13"><label for="t3-13">TensorFlow</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="section-card" id="sec-4">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-4">
+                        <h3>🗣️ 4. NLP</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-4" class="collapse">
+                        <div class="card-body-custom">
+                            <div class="sub-category">Core NLP</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-1"><label for="t4-1">Tokenization</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-2"><label for="t4-2">Stemming</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-3"><label for="t4-3">Lemmatization</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-4"><label for="t4-4">Stop Words</label></li>
+                            </ul>
+                            <div class="sub-category">Text Representation</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-5"><label for="t4-5">Bag of Words</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-6"><label for="t4-6">TF-IDF</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-7"><label for="t4-7">Word2Vec</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-8"><label for="t4-8">GloVe</label></li>
+                            </ul>
+                            <div class="sub-category">Tasks</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-9"><label for="t4-9">Text Classification</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-10"><label for="t4-10">Sentiment Analysis</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t4-11"><label for="t4-11">Named Entity Recognition</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5 -->
+                <div class="section-card" id="sec-5">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-5">
+                        <h3>💬 5. LLMs</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-5" class="collapse">
+                        <div class="card-body-custom">
+                            <div class="sub-category">Topics</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t5-1"><label for="t5-1">Tokens</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t5-2"><label for="t5-2">Context Window</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t5-3"><label for="t5-3">Temperature</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t5-4"><label for="t5-4">Hallucination</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t5-5"><label for="t5-5">Sampling Methods</label></li>
+                            </ul>
+                            <div class="sub-category">Tools</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t5-6"><label for="t5-6">Hugging Face</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t5-7"><label for="t5-7">Transformers</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t5-8"><label for="t5-8">Tokenizers</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6 -->
+                <div class="section-card" id="sec-6">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-6">
+                        <h3>✨ 6. Prompt Engineering</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-6" class="collapse">
+                        <div class="card-body-custom">
+                            <ul class="topic-list mt-3">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t6-1"><label for="t6-1">Zero-shot prompting</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t6-2"><label for="t6-2">Few-shot prompting</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t6-3"><label for="t6-3">Chain-of-thought</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t6-4"><label for="t6-4">ReAct prompting</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t6-5"><label for="t6-5">Role-based prompts</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t6-6"><label for="t6-6">System prompts</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 7 -->
+                <div class="section-card" id="sec-7">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-7">
+                        <h3>📚 7. RAG</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-7" class="collapse">
+                        <div class="card-body-custom">
+                            <div class="sub-category">Core</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t7-1"><label for="t7-1">Document Loading</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t7-2"><label for="t7-2">Chunking</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t7-3"><label for="t7-3">Embeddings</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t7-4"><label for="t7-4">Retrieval</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t7-5"><label for="t7-5">Generation</label></li>
+                            </ul>
+                            <div class="sub-category">Vector DB</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t7-6"><label for="t7-6">ChromaDB</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t7-7"><label for="t7-7">Pinecone</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t7-8"><label for="t7-8">Weaviate</label></li>
+                            </ul>
+                            <div class="sub-category">Frameworks</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t7-9"><label for="t7-9">LangChain</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t7-10"><label for="t7-10">LlamaIndex</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 8 -->
+                <div class="section-card" id="sec-8">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-8">
+                        <h3>🕵️ 8. AI Agents</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-8" class="collapse">
+                        <div class="card-body-custom">
+                            <div class="sub-category">Topics</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t8-1"><label for="t8-1">Tool Calling</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t8-2"><label for="t8-2">Memory</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t8-3"><label for="t8-3">Planning</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t8-4"><label for="t8-4">Multi-Agent Systems</label></li>
+                            </ul>
+                            <div class="sub-category">Frameworks</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t8-5"><label for="t8-5">LangChain Agents</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t8-6"><label for="t8-6">CrewAI</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t8-7"><label for="t8-7">AutoGen</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 9 -->
+                <div class="section-card" id="sec-9">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-9">
+                        <h3>⚙️ 9. Fine-Tuning</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-9" class="collapse">
+                        <div class="card-body-custom">
+                            <ul class="topic-list mt-3">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t9-1"><label for="t9-1">Dataset Preparation</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t9-2"><label for="t9-2">Tokenization</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t9-3"><label for="t9-3">Training Loops</label></li>
+                            </ul>
+                            <div class="sub-category">Techniques</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t9-4"><label for="t9-4">LoRA</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t9-5"><label for="t9-5">QLoRA</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t9-6"><label for="t9-6">PEFT</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 10 -->
+                <div class="section-card" id="sec-10">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-10">
+                        <h3>🌐 10. Backend Development</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-10" class="collapse">
+                        <div class="card-body-custom">
+                            <ul class="topic-list mt-3">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t10-1"><label for="t10-1">FastAPI</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t10-2"><label for="t10-2">Flask</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t10-3"><label for="t10-3">REST APIs</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t10-4"><label for="t10-4">JSON Handling</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t10-5"><label for="t10-5">Error Handling</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 11 -->
+                <div class="section-card" id="sec-11">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-11">
+                        <h3>🚀 11. Deployment</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-11" class="collapse">
+                        <div class="card-body-custom">
+                            <ul class="topic-list mt-3">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t11-1"><label for="t11-1">Git</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t11-2"><label for="t11-2">GitHub</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t11-3"><label for="t11-3">Docker</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t11-4"><label for="t11-4">Environment Variables</label></li>
+                            </ul>
+                            <div class="sub-category">Cloud</div>
+                            <ul class="topic-list">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t11-5"><label for="t11-5">AWS</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t11-6"><label for="t11-6">GCP</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t11-7"><label for="t11-7">Azure</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 12 -->
+                <div class="section-card" id="sec-12">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-12">
+                        <h3>📊 12. MLOps</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-12" class="collapse">
+                        <div class="card-body-custom">
+                            <ul class="topic-list mt-3">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t12-1"><label for="t12-1">MLflow</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t12-2"><label for="t12-2">Weights & Biases</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t12-3"><label for="t12-3">Model Versioning</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 13 -->
+                <div class="section-card" id="sec-13">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-13">
+                        <h3>🏗️ 13. System Design</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-13" class="collapse">
+                        <div class="card-body-custom">
+                            <ul class="topic-list mt-3">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t13-1"><label for="t13-1">Data Flow</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t13-2"><label for="t13-2">API Design</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t13-3"><label for="t13-3">Model Serving</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t13-4"><label for="t13-4">Microservices</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 14 -->
+                <div class="section-card" id="sec-14">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-14">
+                        <h3>💻 14. Projects</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-14" class="collapse">
+                        <div class="card-body-custom">
+                            <ul class="topic-list mt-3">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t14-1"><label for="t14-1">Project 1: PDF Chatbot (RAG)</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t14-2"><label for="t14-2">Project 2: Multi-Agent Assistant</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t14-3"><label for="t14-3">Project 3: AI API Service</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t14-4"><label for="t14-4">Project 4: Fine-Tuned Model</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 15 -->
+                <div class="section-card" id="sec-15">
+                    <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-15">
+                        <h3>🔮 15. Optional Topics</h3>
+                        <span class="chevron-icon">&#9660;</span>
+                    </div>
+                    <div id="collapse-15" class="collapse">
+                        <div class="card-body-custom">
+                            <ul class="topic-list mt-3">
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t15-1"><label for="t15-1">Multimodal Models</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t15-2"><label for="t15-2">Image Generation</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t15-3"><label for="t15-3">Speech Models</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t15-4"><label for="t15-4">Function Calling</label></li>
+                                <li class="topic-item"><input type="checkbox" class="form-check-input topic-check"
+                                        id="t15-5"><label for="t15-5">Open Source Contributions</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            AI Intern Preparation Roadmap &mdash; Personal Study Guide
+        </footer>
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Sidebar toggler for mobile
+            const toggler = document.getElementById('sidebar-toggler');
+            const sidebar = document.getElementById('sidebar');
+            toggler.addEventListener('click', () => {
+                sidebar.classList.toggle('show');
+            });
+
+            // Close sidebar when clicking a navigation link on mobile
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 992) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            });
+
+            // Rotate Chevron icon when collapse is toggled
+            const collapsibles = document.querySelectorAll('.collapse');
+            collapsibles.forEach(collapse => {
+                collapse.addEventListener('show.bs.collapse', (e) => {
+                    const icon = e.target.previousElementSibling.querySelector('.chevron-icon');
+                    if (icon) icon.style.transform = 'rotate(180deg)';
+                });
+                collapse.addEventListener('hide.bs.collapse', (e) => {
+                    const icon = e.target.previousElementSibling.querySelector('.chevron-icon');
+                    if (icon) icon.style.transform = 'rotate(0deg)';
+                });
+            });
+
+            // Setup checkboxes and load progress from LocalStorage
+            const checkboxes = document.querySelectorAll('.topic-check');
+            checkboxes.forEach(cb => {
+                const savedStatus = localStorage.getItem(cb.id);
+                if (savedStatus === 'true') {
+                    cb.checked = true;
+                    cb.nextElementSibling.classList.add('completed-text');
+                }
+
+                cb.addEventListener('change', (e) => {
+                    localStorage.setItem(e.target.id, e.target.checked);
+                    if (e.target.checked) {
+                        e.target.nextElementSibling.classList.add('completed-text');
+                    } else {
+                        e.target.nextElementSibling.classList.remove('completed-text');
+                    }
+                    updateOverallProgress();
+                });
+            });
+
+            // Update Progress Bar Function
+            function updateOverallProgress() {
+                const total = checkboxes.length;
+                const checked = document.querySelectorAll('.topic-check:checked').length;
+                const percent = total === 0 ? 0 : Math.round((checked / total) * 100);
+
+                const desktopProgress = document.getElementById('overall-progress');
+                const desktopText = document.getElementById('progress-text');
+                const mobileProgress = document.getElementById('overall-progress-mobile');
+                const mobileText = document.getElementById('progress-text-mobile');
+
+                if (desktopProgress && desktopText) {
+                    desktopProgress.style.width = percent + '%';
+                    desktopProgress.setAttribute('aria-valuenow', percent);
+                    desktopText.innerText = percent + '% Completed';
+                }
+                if (mobileProgress && mobileText) {
+                    mobileProgress.style.width = percent + '%';
+                    mobileProgress.setAttribute('aria-valuenow', percent);
+                    mobileText.innerText = percent + '% Completed';
+                }
+            }
+
+            // Initialize progress
+            updateOverallProgress();
+
+            // Search Bar Functionality
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.section-card');
+
+                cards.forEach(card => {
+                    let cardHasMatch = false;
+                    const topics = card.querySelectorAll('.topic-item');
+                    const subCats = card.querySelectorAll('.sub-category');
+
+                    // Filter topics
+                    topics.forEach(topic => {
+                        const text = topic.innerText.toLowerCase();
+                        if (text.includes(term)) {
+                            topic.style.display = 'flex';
+                            cardHasMatch = true;
+                        } else {
+                            topic.style.display = 'none';
+                        }
+                    });
+
+                    // Hide/Show subcategories based on visible topics
+                    subCats.forEach(subCat => {
+                        const list = subCat.nextElementSibling;
+                        if (list && list.classList.contains('topic-list')) {
+                            const visibleItems = Array.from(list.querySelectorAll('.topic-item')).filter(li => li.style.display !== 'none');
+                            subCat.style.display = visibleItems.length > 0 || term === '' ? 'block' : 'none';
+                            list.style.display = visibleItems.length > 0 || term === '' ? 'block' : 'none';
+                        }
+                    });
+
+                    // Manage bootstrap collapse visibility based on search results
+                    const collapseElement = card.querySelector('.collapse');
+                    if (collapseElement) {
+                        // We use bootstrap API to programmatically show/hide without messing up internal state
+                        const bsCollapse = bootstrap.Collapse.getInstance(collapseElement) || new bootstrap.Collapse(collapseElement, { toggle: false });
+
+                        // If searched and found match inside, open the card
+                        if (term !== '' && cardHasMatch) {
+                            bsCollapse.show();
+                        }
+                    }
+
+                    // Hide the entire card if no matches inside
+                    card.style.display = cardHasMatch || term === '' ? 'block' : 'none';
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
